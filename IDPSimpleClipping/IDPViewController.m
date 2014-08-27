@@ -98,7 +98,7 @@
     _bezierPath = bezierPath;
     // パスを格納
     
-    [IDPSimpleClippingView maskViewWithPath:bezierPath targetView:_previewView drawArea:simpleClippingView.frame clippingType:IDPSimpleClippingViewClippingTypeErase];
+    [IDPSimpleClippingView maskViewWithPath:bezierPath targetView:_previewView drawArea:simpleClippingView.frame clippingType:IDPSimpleClippingViewClippingTypeClipping];
     
 }
 
@@ -115,7 +115,7 @@
     CGContextSaveGState(UIGraphicsGetCurrentContext());
     
     
-    [IDPSimpleClippingView applyPathWithPath:_bezierPath targetSize:imageSize originalArea:_previewView.frame drawArea:_simpleClippingView.frame clippingType:IDPSimpleClippingViewClippingTypeErase];
+    [IDPSimpleClippingView applyPathWithPath:_bezierPath targetSize:imageSize originalArea:_previewView.frame drawArea:_simpleClippingView.frame clippingType:IDPSimpleClippingViewClippingTypeClipping];
     
     [_originalImage drawInRect:CGRectMake(.0f,.0f, imageSize.width, imageSize.height)];
     
