@@ -8,6 +8,7 @@
 
 #import "IDPViewController.h"
 #import "IDPSimpleClippingView.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface IDPViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,IDPSimpleClippingViewDelegate>
 {
@@ -104,6 +105,12 @@
 
 - (IBAction)firedSaveCameraRoll:(id)sender
 {
+    if( _originalImage == nil ){
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"イメージの選択" message:@"切り抜くイメージを選択してからSaveしてください。" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+        return;
+    }
+    
     CGSize imageSize = _originalImage.size;
     
     UIGraphicsBeginImageContext(imageSize);
@@ -115,7 +122,13 @@
     CGContextSaveGState(UIGraphicsGetCurrentContext());
     
     
-    [IDPSimpleClippingView applyPathWithPath:_bezierPath targetSize:imageSize originalArea:_previewView.frame drawArea:_simpleClippingView.frame clippingType:IDPSimpleClippingViewClippingTypeClipping];
+    CGRect oritinalArea = AVMakeRectWithAspectRatioInsideRect(imageSize, _previewView.frame);
+    
+    NSLog(@"oritinalArea=%@",[NSValue valueWithCGRect:oritinalArea]);
+    NSLog(@"_previewView.frame=%@",[NSValue valueWithCGRect:_previewView.frame]);
+    
+    
+    [IDPSimpleClippingView applyPathWithPath:_bezierPath targetSize:imageSize originalArea:oritinalArea drawArea:_simpleClippingView.frame clippingType:IDPSimpleClippingViewClippingTypeClipping];
     
     [_originalImage drawInRect:CGRectMake(.0f,.0f, imageSize.width, imageSize.height)];
     
